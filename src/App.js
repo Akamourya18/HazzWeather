@@ -22,7 +22,6 @@ import BackgroundColor from './components/BackgroundColor';
 function App() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const { t, i18n } = useTranslation();
-
   const [noData, setNoData] = useState(t('no-data'));
   const [searchTerm, setSearchTerm] = useState('');
   const [weatherData, setWeatherData] = useState([]);
@@ -34,12 +33,16 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [backgroundSoundEnabled, setBackgroundSoundEnabled] = useState(true);
   const [isFahrenheitMode, setIsFahrenheitMode] = useState(false);
-
   const degreeSymbol = useMemo(
     () => (isFahrenheitMode ? '\u00b0F' : '\u00b0C'),
     [isFahrenheitMode]
   );
+  const [active, setActive] = useState(false);
 
+  const activate = () => {
+    setActive(true);
+  }
+  
   const toggleDark = () => {
     document.body.classList.toggle('dark');
   };
@@ -52,7 +55,7 @@ function App() {
     const { value } = input.target;
     setSearchTerm(value);
   };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     getWeather(searchTerm);
@@ -148,7 +151,7 @@ function App() {
         >
           <div className="name">
             <div className="logo">
-              Hazz Weather<hr></hr>
+              Hazz Weather<br></br>
             </div>
             <div className="toggle-container">
               <input
@@ -184,7 +187,8 @@ function App() {
                 type="text"
                 name=""
                 id=""
-                placeholder="Explore cities weather"
+                onClick={activate}
+                placeholder={active ? "":"Explore cities weather"}
                 onChange={handleChange}
                 required
               />
@@ -217,6 +221,7 @@ function App() {
               <option value="es">{t('languages.es')}</option>
               <option value="fr">{t('languages.fr')}</option>
               <option value="id">{t('languages.id')}</option>
+              <option value="ta">{t('languages.ta')}</option>
             </select>
             <div className="toggle-container">
               <input
@@ -254,7 +259,7 @@ function App() {
                         alt="a person thinking about what place to find"
                       />
                       <p style={{ padding: '20px' }}>
-                        Don't worry, if you don't know what to search, try with:
+                        Don't worry, if you don't know what search, try with:
                         Dhaka, Canada or maybe USA.
                       </p>
                     </>
